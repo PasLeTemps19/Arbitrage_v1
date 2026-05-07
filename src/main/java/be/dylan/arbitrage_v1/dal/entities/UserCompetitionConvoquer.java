@@ -16,7 +16,6 @@ import java.time.LocalDate;
 public class UserCompetitionConvoquer implements Serializable {
 
     @EmbeddedId
-    @Setter(AccessLevel.NONE)
     private UserCompetitionConvoquerId id;
 
     @Column(nullable = false)

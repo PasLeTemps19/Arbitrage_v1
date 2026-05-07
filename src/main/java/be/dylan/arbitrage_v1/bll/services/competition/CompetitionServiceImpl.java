@@ -37,7 +37,7 @@ public class CompetitionServiceImpl implements CompetitionService {
 
     @Override
     public Competition getCompetitionById(Long id) {
-        return competitionRepository.findById(id).orElseThrow(() ->new IllegalArgumentException("Competition pas trouver"));
+        return competitionRepository.findById(id).orElseThrow(() ->new IllegalArgumentException("Competition pas trouvé"));
     }
 
     @Override

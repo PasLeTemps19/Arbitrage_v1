@@ -27,14 +27,14 @@ public class UserRank {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ElementCollection
-    @CollectionTable(name = "userRankMap", joinColumns = @JoinColumn(name = "user_rank_id"))
-    @MapKeyEnumerated(EnumType.STRING)
-    @MapKeyColumn(name = "style")
-    @Column(name = "type")
-    @Enumerated(EnumType.STRING)
-    private Map<RankStyle, RankType> ranks = new HashMap<>();
+
+    @ManyToOne
+    @JoinColumn(name ="rank_id", nullable = false )
+    private Rank rank;
+
+    @Column
+    private LocalDate obtentionDate;
 
     @Column(nullable = false)
-    private LocalDate obtentionDate;
+    private boolean lastActive;
 }

@@ -26,7 +26,7 @@ public class SeasonServiceImpl implements SeasonService {
 
     @Override
     public Season getSeasonById(Long id) {
-        return seasonRepository.findById(id).orElseThrow(() -> new RuntimeException("Saison pas trouver"));
+        return seasonRepository.findById(id).orElseThrow(() -> new RuntimeException("Saison pas trouvé"));
     }
 
     @Override

@@ -31,7 +31,7 @@ public class GymnasiumServiceImpl implements GymnasiumService {
 
     @Override
     public Gymnasium getGymnasiumById(Long id) {
-        return gymnasiumRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Gymnasium id " + id + " pas trouver"));
+        return gymnasiumRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Gymnasium id " + id + " pas trouvé"));
     }
 
     @Override
