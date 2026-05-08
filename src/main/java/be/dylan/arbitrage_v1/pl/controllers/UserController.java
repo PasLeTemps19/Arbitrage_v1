@@ -4,12 +4,14 @@ import be.dylan.arbitrage_v1.bll.mappers.UserMapper;
 import be.dylan.arbitrage_v1.bll.services.user.UserService;
 import be.dylan.arbitrage_v1.dal.entities.User;
 import be.dylan.arbitrage_v1.pl.dtos.user.*;
+import jakarta.annotation.security.PermitAll;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -56,6 +58,20 @@ public ResponseEntity<List<UserIndexDto>> findAll() {
     public ResponseEntity<Void> updatePassword(@PathVariable Long id, @RequestBody @Valid UserUpdatePasswordFormDto userUpdatePasswordFormDto){
         userService.updatePassword(id, userUpdatePasswordFormDto);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/invite")
+    public ResponseEntity<Void> invite(@RequestBody @Valid UserInviteFormDto userInviteFormDto) {
+        userService.inviteUser(userInviteFormDto.getEmail());
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/register/{token}")
+    public ResponseEntity<Void> register(@PathVariable String token) {
+        userService.registerUser(token);
+        return ResponseEntity.status(HttpStatus.FOUND)
+                .location(URI.create("http://localhost:8081/realms/Arbitrage/protocol/openid-connect/registrations?client_id=spring-app-arbitrage&response_type=code"))
+                .build();
     }
 
 }

@@ -16,4 +16,6 @@ public interface UserService {
     User updateUser(Long id, UserUpdateFormDto userUpdateFormDto);
     void deleteUser(Long id);
     void updatePassword(Long id, UserUpdatePasswordFormDto  userUpdatePasswordFormDto);
+    void inviteUser(String email);
+    void registerUser(String token);
 }

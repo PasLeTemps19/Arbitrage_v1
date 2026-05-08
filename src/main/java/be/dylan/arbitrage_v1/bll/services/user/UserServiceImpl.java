@@ -1,6 +1,7 @@
 package be.dylan.arbitrage_v1.bll.services.user;
 
 import be.dylan.arbitrage_v1.bll.mappers.UserMapper;
+import be.dylan.arbitrage_v1.bll.services.email.EmailService;
 import be.dylan.arbitrage_v1.dal.entities.User;
 import be.dylan.arbitrage_v1.dal.repositories.UserRepository;
 import be.dylan.arbitrage_v1.pl.dtos.user.UserCreateFormDto;
@@ -9,14 +10,18 @@ import be.dylan.arbitrage_v1.pl.dtos.user.UserUpdatePasswordFormDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final EmailService emailService;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, EmailService emailService) {
         this.userRepository = userRepository;
+        this.emailService = emailService;
+
     }
 
 
@@ -65,6 +70,39 @@ public class UserServiceImpl implements UserService {
         }
         user.setPassword(userUpdatePasswordFormDto.getPassword());
          userRepository.save(user);
+    }
+
+    @Override
+    public void inviteUser(String email) {
+        // 1. Générer un token unique
+        String token = UUID.randomUUID().toString();
+
+        // 2. Créer un user avec juste l'email et le token
+        User user = new User();
+        user.setEmail(email);
+        user.setToken(token);
+        user.setActive(false); // inactif jusqu'à l'inscription
+        userRepository.save(user);
+
+        // 3. Envoyer l'email d'invitation
+        emailService.sendInvitationEmail(email, token);
+    }
+
+    @Override
+    public void registerUser(String token) {
+        // 1. Vérifier que le token existe
+        User user = userRepository.findByToken(token)
+                .orElseThrow(() -> new RuntimeException("Token invalide ou expiré"));
+
+        // 2. Vérifier que le user n'est pas déjà inscrit
+        if(user.getName() != null) {
+            throw new RuntimeException("Un compte existe déjà avec cet email");
+        }
+
+        // 3. Activer le user
+        user.setActive(true);
+        user.setToken(null);
+        userRepository.save(user);
     }
 
 

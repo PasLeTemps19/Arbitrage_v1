@@ -38,3 +38,4 @@ spring:
           auth: true
           starttls:
             enable: true
+    from: cdk91arbitrage-karate@hotmail.com

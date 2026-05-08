@@ -29,19 +29,19 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 150,nullable = false)
+    @Column(length = 150,nullable = true)
     private String name;
 
-    @Column(length = 150,nullable = false)
+    @Column(length = 150,nullable = true)
     private String surname;
 
-    @Column(length = 150,nullable = false)
+    @Column(length = 150,nullable = true)
     private String club;
 
     @Column(length = 150,nullable = false,unique = true)
     private String email;
 
-    @Column(length = 150,nullable = false)
+    @Column(length = 150,nullable = true)
     private String password;
 
     @Column(nullable = false)
