@@ -70,7 +70,7 @@ public ResponseEntity<List<UserIndexDto>> findAll() {
     public ResponseEntity<Void> register(@PathVariable String token) {
         userService.registerUser(token);
         return ResponseEntity.status(HttpStatus.FOUND)
-                .location(URI.create("http://localhost:8081/realms/Arbitrage/protocol/openid-connect/registrations?client_id=spring-app-arbitrage&response_type=code"))
+                .location(URI.create("http://localhost:3000/login"))
                 .build();
     }
 

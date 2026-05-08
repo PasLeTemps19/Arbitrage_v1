@@ -101,7 +101,6 @@ public class UserServiceImpl implements UserService {
 
         // 3. Activer le user
         user.setActive(true);
-        user.setToken(null);
         userRepository.save(user);
     }
 

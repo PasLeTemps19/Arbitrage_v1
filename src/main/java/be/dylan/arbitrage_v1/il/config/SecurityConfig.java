@@ -1,8 +1,10 @@
 package be.dylan.arbitrage_v1.il.config;
 
+import be.dylan.arbitrage_v1.il.config.converters.KeycloakRoleConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 
@@ -16,24 +18,33 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtGra
 public class SecurityConfig {
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    @Order(1)
+    public SecurityFilterChain publicChain(HttpSecurity http) throws Exception {
+        http
+                .securityMatcher("/users/register/**")
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
 
+        return http.build();
+    }
+    @Bean
+    @Order(2)
+    public SecurityFilterChain apiChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
-
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**"
                         ).permitAll()
-                        .anyRequest().permitAll()
+                        .anyRequest().authenticated()
                 )
-
                 .oauth2ResourceServer(oauth2 -> oauth2
                         .jwt(jwt -> jwt
                                 .jwtAuthenticationConverter(jwtAuthenticationConverter())
                         )
                 );
+        
 
         return http.build();
     }
@@ -42,16 +53,12 @@ public class SecurityConfig {
     @Bean
     public JwtAuthenticationConverter jwtAuthenticationConverter() {
 
-        JwtGrantedAuthoritiesConverter grantedAuthoritiesConverter =
-                new JwtGrantedAuthoritiesConverter();
+        JwtAuthenticationConverter jwtConverter =
+                new JwtAuthenticationConverter();
 
-        grantedAuthoritiesConverter.setAuthoritiesClaimName("realm_access.roles");
-
-        // Spring attend "ROLE_"
-        grantedAuthoritiesConverter.setAuthorityPrefix("ROLE_");
-
-        JwtAuthenticationConverter jwtConverter = new JwtAuthenticationConverter();
-        jwtConverter.setJwtGrantedAuthoritiesConverter(grantedAuthoritiesConverter);
+        jwtConverter.setJwtGrantedAuthoritiesConverter(
+                new KeycloakRoleConverter()
+        );
 
         return jwtConverter;
     }
