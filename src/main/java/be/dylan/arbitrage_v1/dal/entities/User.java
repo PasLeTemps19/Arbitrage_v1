@@ -41,8 +41,6 @@ public class User {
     @Column(length = 150,nullable = false,unique = true)
     private String email;
 
-    @Column(length = 150,nullable = true)
-    private String password;
 
     @Column(nullable = false)
     private boolean active;
@@ -59,13 +57,6 @@ public class User {
     private String token;
 
 
-    @ManyToMany
-    @JoinTable(
-            name = "userRole",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
-    private Set<Role> userRole = new HashSet<>();
 
     @ManyToMany
     @JoinTable(

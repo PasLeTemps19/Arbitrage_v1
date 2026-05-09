@@ -54,11 +54,7 @@ public ResponseEntity<List<UserIndexDto>> findAll() {
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
-    @PutMapping("/{id}/password")
-    public ResponseEntity<Void> updatePassword(@PathVariable Long id, @RequestBody @Valid UserUpdatePasswordFormDto userUpdatePasswordFormDto){
-        userService.updatePassword(id, userUpdatePasswordFormDto);
-        return ResponseEntity.noContent().build();
-    }
+
 
     @PostMapping("/invite")
     public ResponseEntity<Void> invite(@RequestBody @Valid UserInviteFormDto userInviteFormDto) {

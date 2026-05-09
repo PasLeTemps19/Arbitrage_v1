@@ -22,19 +22,6 @@ public class UserMapper {
         );
     }
 
-    public static UserDetailsAdminViewDto convertToUserDetailsAdminViewDto(User user) {
-        return new UserDetailsAdminViewDto(
-                user.getId(),
-                user.getName(),
-                user.getSurname(),
-                user.getClub(),
-                user.getEmail(),
-                user.isActive(),
-                user.getCreateDate(),
-                user.getUpdateDate()
-
-        );
-    }
 
     public static User convertToUser(UserCreateFormDto dto) {
         User user = new User();
@@ -42,7 +29,6 @@ public class UserMapper {
         user.setSurname(dto.getSurname());
         user.setClub(dto.getClub());
         user.setEmail(dto.getEmail());
-        user.setPassword(dto.getPassword()); // il faut je regarde bcrypt quand j'ai le temps
         user.setActive(true);
         return user;
     }
