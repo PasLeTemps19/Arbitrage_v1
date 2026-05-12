@@ -4,11 +4,11 @@ import be.dylan.arbitrage_v1.bll.mappers.UserMapper;
 import be.dylan.arbitrage_v1.bll.services.user.UserService;
 import be.dylan.arbitrage_v1.dal.entities.User;
 import be.dylan.arbitrage_v1.pl.dtos.user.*;
-import jakarta.annotation.security.PermitAll;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -22,7 +22,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
-public ResponseEntity<List<UserIndexDto>> findAll() {
+    public ResponseEntity<List<UserIndexDto>> findAll() {
         List<UserIndexDto> users = userService.getAllUsers()
                 .stream()
                 .map(UserMapper::convertToUserIndexDto)
@@ -38,17 +38,18 @@ public ResponseEntity<List<UserIndexDto>> findAll() {
     }
 
     @PostMapping("/create")
-    public  ResponseEntity<UserDetailsUserViewDto> create(@RequestBody @Valid UserCreateFormDto userCreateFormDto) {
+    public ResponseEntity<UserDetailsUserViewDto> create(@RequestBody @Valid UserCreateFormDto userCreateFormDto) {
         User userCreate = userService.addUser(userCreateFormDto);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(UserMapper.convertToUserDetailsUserViewDto(userCreate));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserDetailsUserViewDto> update(@PathVariable Long id,@RequestBody @Valid UserUpdateFormDto userUpdateFormDto) {
-        User userUpdate = userService.updateUser(id,userUpdateFormDto);
+    public ResponseEntity<UserDetailsUserViewDto> update(@PathVariable Long id, @RequestBody @Valid UserUpdateFormDto userUpdateFormDto) {
+        User userUpdate = userService.updateUser(id, userUpdateFormDto);
         return ResponseEntity.ok(UserMapper.convertToUserDetailsUserViewDto(userUpdate));
     }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         userService.deleteUser(id);
@@ -66,8 +67,16 @@ public ResponseEntity<List<UserIndexDto>> findAll() {
     public ResponseEntity<Void> register(@PathVariable String token) {
         userService.registerUser(token);
         return ResponseEntity.status(HttpStatus.FOUND)
-                .location(URI.create("http://localhost:3000/login"))
+                .location(URI.create("http://localhost:8081/realms/Arbitrage/protocol/openid-connect/registrations?client_id=spring-app-arbitrage&response_type=code"))
                 .build();
+    }
+
+    @PostMapping("/complete-profile")
+    public ResponseEntity<Void> completeProfile(
+            @RequestBody @Valid UserCompleteProfileFormDto dto,
+            Authentication authentication) {
+        userService.completeProfile(dto, authentication);
+        return ResponseEntity.ok().build();
     }
 
 }

@@ -1,6 +1,7 @@
 package be.dylan.arbitrage_v1.dal.repositories;
 
 
+
 import be.dylan.arbitrage_v1.dal.entities.User;
 import be.dylan.arbitrage_v1.dal.entities.UserRank;
 import be.dylan.arbitrage_v1.dal.enums.RankStyle;

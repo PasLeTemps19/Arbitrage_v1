@@ -41,5 +41,14 @@ public class UserMapper {
         return user;
     }
 
+    public static User convertCompleteProfile(User user, UserCompleteProfileFormDto dto, String name, String surname) {
+        user.setName(name);
+        user.setSurname(surname);
+        user.setClub(dto.getClub());
+        user.setActive(true);
+        user.setToken(null);
+        return user;
+    }
+
 
 }

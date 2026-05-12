@@ -6,8 +6,6 @@ import be.dylan.arbitrage_v1.bll.services.user.UserService;
 import be.dylan.arbitrage_v1.dal.entities.Rank;
 import be.dylan.arbitrage_v1.dal.entities.User;
 import be.dylan.arbitrage_v1.dal.entities.UserRank;
-import be.dylan.arbitrage_v1.dal.enums.RankStyle;
-import be.dylan.arbitrage_v1.dal.enums.RankType;
 import be.dylan.arbitrage_v1.dal.repositories.RankRepository;
 import be.dylan.arbitrage_v1.dal.repositories.UserRankRepository;
 import be.dylan.arbitrage_v1.pl.dtos.userRank.UserRankCreateFormDto;
