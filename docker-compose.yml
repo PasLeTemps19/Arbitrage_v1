@@ -29,5 +29,8 @@ services:
     depends_on:
       - postgres
 
+    volumes:
+      - ./keycloak-theme-for-kc-all-other-versions.jar:/opt/keycloak/providers/keycloakify-theme.jar
+
 volumes:
   pg_keycloak:
