@@ -19,4 +19,5 @@ public interface UserService {
     void inviteUser(String email);
     void registerUser(String token);
     void completeProfile(UserCompleteProfileFormDto dto, Authentication authentication);
+    User getMe(String email);
 }

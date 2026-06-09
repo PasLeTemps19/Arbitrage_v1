@@ -20,8 +20,8 @@ public class UserRankController {
     private final UserRankService userRankService;
 
     @GetMapping("/{userId}")
-    public ResponseEntity<List<UserRankDetailsDto>> findById(@PathVariable Long id) {
-        List<UserRankDetailsDto> userRankDetailsDtos = userRankService.getUserRanks(id)
+    public ResponseEntity<List<UserRankDetailsDto>> findById(@PathVariable Long userId) {
+        List<UserRankDetailsDto> userRankDetailsDtos = userRankService.getUserRanks(userId)
                 .stream()
                 .map(UserRankMapper::convertToUserRankDetailsDto)
                 .toList();

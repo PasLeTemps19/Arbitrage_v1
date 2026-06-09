@@ -139,5 +139,10 @@ public class UserServiceImpl implements UserService {
         userRankService.assignRank(userRankDto2);
     }
 
+    @Override
+    public User getMe(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User non trouvé"));
+    }
 
 }

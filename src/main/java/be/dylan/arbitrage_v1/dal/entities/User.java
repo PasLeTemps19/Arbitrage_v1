@@ -36,7 +36,7 @@ public class User {
     @Column(length = 150,nullable = true)
     private String surname;
 
-    @Column(length = 150,nullable = true)
+    @Column(length = 150,nullable = false)
     private String club;
 
     @Column(length = 150,nullable = false,unique = true)

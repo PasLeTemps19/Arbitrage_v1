@@ -22,6 +22,8 @@ public class UserRankMapper {
                 userRank.getId(),
                 userRank.getUser().getId(),
                 userRank.getRank().getId(),
+                userRank.getRank().getStyle().name(),
+                userRank.getRank().getType().name(),
                 userRank.getObtentionDate(),
                 userRank.isLastActive()
         );

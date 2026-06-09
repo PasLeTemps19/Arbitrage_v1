@@ -14,6 +14,9 @@ import org.hibernate.annotations.SoftDelete;
 @ToString
 @EqualsAndHashCode(of = "id")
 
+@Table(uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"style", "type"})
+})
 public class Rank {
 
     @Setter(AccessLevel.NONE)

@@ -6,6 +6,8 @@ public record UserRankDetailsDto(
         Long id,
         Long userId,
         Long rankId,
+        String rankStyle,
+        String rankType,
         LocalDate obtentionDate,
         boolean lastActive
 ) {}

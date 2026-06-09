@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.oauth2.jwt.Jwt;
+
 
 import java.net.URI;
 import java.util.List;
@@ -77,6 +79,14 @@ public class UserController {
             Authentication authentication) {
         userService.completeProfile(dto, authentication);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<UserDetailsUserViewDto> getMe(Authentication authentication) {
+        Jwt jwt = (Jwt) authentication.getPrincipal();
+        String email = jwt.getClaim("email");
+        User user = userService.getMe(email);
+        return ResponseEntity.ok(UserMapper.convertToUserDetailsUserViewDto(user));
     }
 
 }
