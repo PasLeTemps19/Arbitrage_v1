@@ -6,5 +6,6 @@ import java.time.LocalDate;
 public record CompetitionIndexDto(
         Long id,
         String name,
-        LocalDate date
+        LocalDate date,
+        Long seasonId
 ) {}

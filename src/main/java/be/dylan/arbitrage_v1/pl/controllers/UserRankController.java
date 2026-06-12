@@ -5,6 +5,7 @@ import be.dylan.arbitrage_v1.bll.services.userRank.UserRankService;
 import be.dylan.arbitrage_v1.dal.entities.UserRank;
 import be.dylan.arbitrage_v1.pl.dtos.userRank.UserRankCreateFormDto;
 import be.dylan.arbitrage_v1.pl.dtos.userRank.UserRankDetailsDto;
+import be.dylan.arbitrage_v1.pl.dtos.userRank.UserRankIndexDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -32,5 +33,14 @@ public class UserRankController {
     public ResponseEntity<UserRankDetailsDto> create(@RequestBody @Valid UserRankCreateFormDto userRankCreateFormDto) {
         UserRank userRankCreate = userRankService.assignRank(userRankCreateFormDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(UserRankMapper.convertToUserRankDetailsDto(userRankCreate));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<UserRankIndexDto>> findAll() {
+        List<UserRankIndexDto> ranks = userRankService.getAllActiveRanks()
+                .stream()
+                .map(UserRankMapper::convertToUserRankIndexDto)
+                .toList();
+        return ResponseEntity.ok(ranks);
     }
 }

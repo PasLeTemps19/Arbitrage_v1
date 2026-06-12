@@ -121,22 +121,14 @@ public class UserServiceImpl implements UserService {
         user.setKeycloakId(keycloakId);
         userRepository.save(user);
 
-        // 5. Assigner les deux rangs
+// 5. Assigner les rangs seulement si différents du rang actif
         Rank rank1 = rankRepository.findByStyleAndType(dto.getRankStyle1(), dto.getRankType1())
                 .orElseThrow(() -> new RuntimeException("Rang 1 non trouvé"));
         Rank rank2 = rankRepository.findByStyleAndType(dto.getRankStyle2(), dto.getRankType2())
                 .orElseThrow(() -> new RuntimeException("Rang 2 non trouvé"));
 
-        UserRankCreateFormDto userRankDto1 = new UserRankCreateFormDto();
-        userRankDto1.setUserId(user.getId());
-        userRankDto1.setRankId(rank1.getId());
-
-        UserRankCreateFormDto userRankDto2 = new UserRankCreateFormDto();
-        userRankDto2.setUserId(user.getId());
-        userRankDto2.setRankId(rank2.getId());
-
-        userRankService.assignRank(userRankDto1);
-        userRankService.assignRank(userRankDto2);
+        userRankService.assignRankIfChanged(user, rank1, dto.getObtentionDate1());
+        userRankService.assignRankIfChanged(user, rank2, dto.getObtentionDate2());
     }
 
     @Override

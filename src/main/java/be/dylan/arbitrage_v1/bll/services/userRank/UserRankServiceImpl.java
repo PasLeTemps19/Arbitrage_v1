@@ -11,6 +11,7 @@ import be.dylan.arbitrage_v1.dal.repositories.UserRankRepository;
 import be.dylan.arbitrage_v1.pl.dtos.userRank.UserRankCreateFormDto;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -43,5 +44,34 @@ public class UserRankServiceImpl implements UserRankService {
         User user = userService.getByIdUser(userId);
         return userRankRepository.findByUser(user);
 
+    }
+
+    @Override
+    public void assignRankIfChanged(User user, Rank rank, LocalDate obtentionDate) {
+        // Cherche si ce rank exact est déjà actif pour cet utilisateur
+        boolean alreadyActive = userRankRepository
+                .existsByUserAndRankAndLastActive(user, rank, true);
+
+        if (!alreadyActive) {
+            // Désactive l'ancien rank actif du même style
+            userRankRepository.findByUserAndRank_StyleAndLastActive(user, rank.getStyle(), true)
+                    .ifPresent(old -> {
+                        old.setLastActive(false);
+                        userRankRepository.save(old);
+                    });
+
+            // Crée le nouveau rank actif
+            UserRank userRank = new UserRank();
+            userRank.setUser(user);
+            userRank.setRank(rank);
+            userRank.setObtentionDate(obtentionDate);
+            userRank.setLastActive(true);
+            userRankRepository.save(userRank);
+        }
+    }
+
+    @Override
+    public List<UserRank> getAllActiveRanks() {
+        return userRankRepository.findByLastActiveTrue();
     }
 }

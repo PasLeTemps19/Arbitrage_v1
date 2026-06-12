@@ -14,7 +14,8 @@ public class CompetitionMapper {
         return new CompetitionIndexDto(
                 competition.getId(),
                 competition.getName(),
-                competition.getDate()
+                competition.getDate(),
+                competition.getSeason().getId()
         );
     }
 

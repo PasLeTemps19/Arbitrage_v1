@@ -8,7 +8,8 @@ public class UserMapper {
     public static UserIndexDto convertToUserIndexDto(User user) {
         return new UserIndexDto(
                 user.getId(),
-                user.getName()
+                user.getName(),
+                user.getSurname()
         );
     }
 

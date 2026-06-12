@@ -5,6 +5,7 @@ import be.dylan.arbitrage_v1.dal.entities.User;
 import be.dylan.arbitrage_v1.dal.entities.UserRank;
 import be.dylan.arbitrage_v1.pl.dtos.userRank.UserRankCreateFormDto;
 import be.dylan.arbitrage_v1.pl.dtos.userRank.UserRankDetailsDto;
+import be.dylan.arbitrage_v1.pl.dtos.userRank.UserRankIndexDto;
 
 public class UserRankMapper {
 
@@ -26,6 +27,14 @@ public class UserRankMapper {
                 userRank.getRank().getType().name(),
                 userRank.getObtentionDate(),
                 userRank.isLastActive()
+        );
+    }
+
+    public static UserRankIndexDto convertToUserRankIndexDto(UserRank userRank) {
+        return new UserRankIndexDto(
+                userRank.getUser().getId(),
+                userRank.getRank().getStyle().name(),
+                userRank.getRank().getType().name()
         );
     }
 }
