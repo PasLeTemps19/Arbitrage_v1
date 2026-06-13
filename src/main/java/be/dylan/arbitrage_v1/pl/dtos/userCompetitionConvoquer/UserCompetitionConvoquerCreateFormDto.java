@@ -4,7 +4,6 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDate;
 @Getter
 @Setter
 public class UserCompetitionConvoquerCreateFormDto {
@@ -14,6 +13,7 @@ public class UserCompetitionConvoquerCreateFormDto {
     @NotNull(message = "La compétition est obligatoire.")
     private Long competitionId;
 
-    private LocalDate convocDate;
-
+    private String subject;
+    private String message;
+    private String introMessage;
 }

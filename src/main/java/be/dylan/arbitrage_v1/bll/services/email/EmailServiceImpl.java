@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfig;
 
+import java.util.List;
+import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
@@ -51,4 +53,44 @@ public class EmailServiceImpl implements EmailService {
             throw new RuntimeException("Erreur lors de l'envoi de l'email", e);
         }
     }
+
+    @Override
+    public void sendConvocationEmail(String to, String arbitreName, String competitionName, String date, String token, String subject, String message, String introMessage, List<File> attachments) {
+        MimeMessage mimeMessage = mailSender.createMimeMessage();
+        try {
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+            helper.setFrom(from);
+            helper.setTo(to);
+            helper.setSubject(subject != null ? subject : "Convocation - " + competitionName);
+
+            var template = freeMarkerConfig.getTemplate("email/convocation.ftlh");
+            String html = FreeMarkerTemplateUtils.processTemplateIntoString(
+                    template,
+                    Map.of(
+                            "arbitreName", arbitreName,
+                            "competitionName", competitionName,
+                            "date", date,
+                            "introMessage", introMessage != null ? introMessage : "Vous êtes convoqué(e) en tant qu'arbitre pour la compétition suivante :",
+                            "message", message != null ? message : "",
+                            "acceptUrl", "http://localhost:8080/convocation/respond/" + token + "?response=ACCEPTE",
+                            "refuseUrl", "http://localhost:8080/convocation/respond/" + token + "?response=REFUSE"
+                    )
+            );
+
+            helper.setText(html, true);
+
+            if (attachments != null) {
+                for (File attachment : attachments) {
+                    helper.addAttachment(attachment.getName(), attachment);
+                }
+            }
+
+            mailSender.send(mimeMessage);
+
+        } catch (MessagingException | IOException | TemplateException e) {
+            throw new RuntimeException("Erreur lors de l'envoi de l'email", e);
+        }
+    }
+
+
 }

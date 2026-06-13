@@ -23,7 +23,7 @@ public class SecurityConfig {
     @Order(1)
     public SecurityFilterChain publicChain(HttpSecurity http) throws Exception {
         http
-                .securityMatcher("/users/register/**")
+                .securityMatcher("/users/register/**", "/convocation/respond/**")
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
 
