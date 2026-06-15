@@ -39,6 +39,10 @@ spring:
           starttls:
             enable: true
     from: cdk91arbitrage-karate@hotmail.com
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 50MB
   logging:
     level:
       org.springframework.security: DEBUG

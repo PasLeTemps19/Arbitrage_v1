@@ -12,6 +12,8 @@ import be.dylan.arbitrage_v1.dal.repositories.UserCompetitionConvoquerRepository
 import be.dylan.arbitrage_v1.pl.dtos.userCompetitionConvoquer.UserCompetitionConvoquerCreateFormDto;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -33,7 +35,7 @@ public class UserCompetitionConvoquerServiceImpl implements UserCompetitionConvo
     }
 
     @Override
-    public UserCompetitionConvoquer addConvocation(UserCompetitionConvoquerCreateFormDto dto) {
+    public UserCompetitionConvoquer addConvocation(UserCompetitionConvoquerCreateFormDto dto, List<File> attachments) {
         User user = userService.getByIdUser(dto.getUserId());
         Competition competition = competitionService.getCompetitionById(dto.getCompetitionId());
         UserCompetitionConvoquer convoquer = UserCompetitionConvoquerMapper.convertToUserCompetitionConvoquer(user, competition, dto);
@@ -48,7 +50,7 @@ public class UserCompetitionConvoquerServiceImpl implements UserCompetitionConvo
                 dto.getSubject(),
                 dto.getMessage(),
                 dto.getIntroMessage(),
-                null
+                attachments
         );
 
         return saved;
@@ -95,5 +97,15 @@ public class UserCompetitionConvoquerServiceImpl implements UserCompetitionConvo
         UserCompetitionConvoquer.UserCompetitionConvoquerId id =
                 new UserCompetitionConvoquer.UserCompetitionConvoquerId(userId, competitionId);
         userCompetitionConvoquerRepository.deleteById(id);
+    }
+    @Override
+    public void trackEmailOpen(String token) {
+        userCompetitionConvoquerRepository.findByToken(token).ifPresent(c -> {
+            if (!c.isEmailOpened()) {
+                c.setEmailOpened(true);
+                c.setEmailOpenedAt(LocalDateTime.now());
+                userCompetitionConvoquerRepository.save(c);
+            }
+        });
     }
 }

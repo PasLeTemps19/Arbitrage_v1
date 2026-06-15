@@ -7,6 +7,7 @@ import org.hibernate.annotations.SoftDelete;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -39,6 +40,12 @@ public class UserCompetitionConvoquer implements Serializable {
 
     @Column(length = 1000)
     private String introMessage;
+
+    @Column
+    private LocalDateTime emailOpenedAt;
+
+    @Column(nullable = false)
+    private boolean emailOpened = false;
 
     @ManyToOne
     @MapsId("userId")

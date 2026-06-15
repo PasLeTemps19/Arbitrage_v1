@@ -34,7 +34,9 @@ public class UserCompetitionConvoquerMapper {
                 c.getConvocDate(),
                 c.getUser().getName() + " " + c.getUser().getSurname(),
                 c.getCompetition().getName(),
-                c.getStatus().name()
+                c.getStatus().name(),
+                c.isEmailOpened(),
+                c.getEmailOpenedAt()
         );
     }
 }
