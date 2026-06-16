@@ -137,4 +137,11 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new RuntimeException("User non trouvé"));
     }
 
+    @Override
+    public void toggleActive(Long id) {
+        User user = getByIdUser(id);
+        user.setActive(!user.isActive());
+        userRepository.save(user);
+    }
+
 }

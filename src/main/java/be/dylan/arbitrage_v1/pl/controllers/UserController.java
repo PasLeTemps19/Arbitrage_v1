@@ -89,4 +89,10 @@ public class UserController {
         return ResponseEntity.ok(UserMapper.convertToUserDetailsUserViewDto(user));
     }
 
+    @PatchMapping("/{id}/toggle-active")
+    public ResponseEntity<Void> toggleActive(@PathVariable Long id) {
+        userService.toggleActive(id);
+        return ResponseEntity.ok().build();
+    }
+
 }

@@ -42,6 +42,32 @@ public class User {
     @Column(length = 150,nullable = false,unique = true)
     private String email;
 
+    @Column(length = 150,nullable = false)
+    private String grade;
+
+    @Column(nullable = false)
+    private LocalDate birthDate;
+
+    @Column(length = 150, nullable = false)
+    private String street;
+
+    @Column(nullable = false)
+    private Integer number;
+
+    @Column(length = 5, nullable = false)
+    private String postalCode;
+
+    @Column(length = 100, nullable = false)
+    private String city;
+
+    @Column(length = 15,nullable = false)
+    private String phoneNumber;
+
+    @Column(length = 15)
+    private String phoneNumberTwo;
+
+    @Column(length = 27)
+    private String iban;
 
     @Column(nullable = false)
     private boolean active;

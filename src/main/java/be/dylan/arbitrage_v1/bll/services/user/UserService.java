@@ -20,4 +20,5 @@ public interface UserService {
     void registerUser(String token);
     void completeProfile(UserCompleteProfileFormDto dto, Authentication authentication);
     User getMe(String email);
+    void toggleActive(Long id);
 }

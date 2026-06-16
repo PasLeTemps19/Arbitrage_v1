@@ -9,7 +9,9 @@ public class UserMapper {
         return new UserIndexDto(
                 user.getId(),
                 user.getName(),
-                user.getSurname()
+                user.getSurname(),
+                user.getPhoneNumber(),
+                user.getEmail()
         );
     }
 
@@ -19,7 +21,20 @@ public class UserMapper {
                 user.getName(),
                 user.getSurname(),
                 user.getClub(),
-                user.getEmail()
+                user.getEmail(),
+                user.getGrade(),
+                user.getBirthDate(),
+                user.getStreet(),
+                user.getNumber(),
+                user.getPostalCode(),
+                user.getCity(),
+                user.getPhoneNumber(),
+                user.getPhoneNumberTwo(),
+                user.getIban(),
+                user.isActive(),
+                user.getCreateDate(),
+                user.getUpdateDate()
+
         );
     }
 
@@ -30,6 +45,15 @@ public class UserMapper {
         user.setSurname(dto.getSurname());
         user.setClub(dto.getClub());
         user.setEmail(dto.getEmail());
+        user.setGrade(dto.getGrade());
+        user.setBirthDate(dto.getBirthDate());
+        user.setStreet(dto.getStreet());
+        user.setNumber(dto.getNumber());
+        user.setPostalCode(dto.getPostalCode());
+        user.setCity(dto.getCity());
+        user.setPhoneNumber(dto.getPhoneNumber());
+        user.setPhoneNumberTwo(dto.getPhoneNumberTwo());
+        user.setIban(dto.getIban());
         user.setActive(true);
         return user;
     }
@@ -39,6 +63,15 @@ public class UserMapper {
         user.setSurname(dto.getSurname());
         user.setClub(dto.getClub());
         user.setEmail(dto.getEmail());
+        user.setGrade(dto.getGrade());
+        user.setBirthDate(dto.getBirthDate());
+        user.setStreet(dto.getStreet());
+        user.setNumber(dto.getNumber());
+        user.setPostalCode(dto.getPostalCode());
+        user.setCity(dto.getCity());
+        user.setPhoneNumber(dto.getPhoneNumber());
+        user.setPhoneNumberTwo(dto.getPhoneNumberTwo());
+        user.setIban(dto.getIban());
         return user;
     }
 
@@ -46,6 +79,15 @@ public class UserMapper {
         user.setName(name);
         user.setSurname(surname);
         user.setClub(dto.getClub());
+        user.setGrade(dto.getGrade());
+        user.setBirthDate(dto.getBirthDate());
+        user.setStreet(dto.getStreet());
+        user.setNumber(dto.getNumber());
+        user.setPostalCode(dto.getPostalCode());
+        user.setCity(dto.getCity());
+        user.setPhoneNumber(dto.getPhoneNumber());
+        user.setPhoneNumberTwo(dto.getPhoneNumberTwo());
+        user.setIban(dto.getIban());
         user.setActive(true);
         user.setToken(null);
         return user;
