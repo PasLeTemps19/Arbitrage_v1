@@ -70,6 +70,8 @@ public class ScheduledEmailServiceImpl implements ScheduledEmailService {
                                 convoquer.getUser().getName() + " " + convoquer.getUser().getSurname(),
                                 scheduled.getCompetition().getName(),
                                 scheduled.getCompetition().getDate().toString(),
+                                scheduled.getCompetition().getTime().toString(),
+                                scheduled.getCompetition().getGymnasium().getCity(),
                                 convoquer.getToken(),
                                 scheduled.getSubject(),
                                 scheduled.getMessage(),

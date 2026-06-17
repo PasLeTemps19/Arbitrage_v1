@@ -7,5 +7,6 @@ public record CompetitionIndexDto(
         Long id,
         String name,
         LocalDate date,
-        Long seasonId
+        Long seasonId,
+        String gymnasiumCity
 ) {}

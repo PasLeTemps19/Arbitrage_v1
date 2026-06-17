@@ -46,6 +46,8 @@ public class UserCompetitionConvoquerServiceImpl implements UserCompetitionConvo
                 user.getName() + " " + user.getSurname(),
                 competition.getName(),
                 competition.getDate().toString(),
+                competition.getTime().toString(),
+                competition.getGymnasium().getCity(),
                 saved.getToken(),
                 dto.getSubject(),
                 dto.getMessage(),

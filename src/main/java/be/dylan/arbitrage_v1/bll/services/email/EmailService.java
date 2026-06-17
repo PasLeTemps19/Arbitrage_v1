@@ -5,5 +5,5 @@ import java.util.List;
 
 public interface EmailService {
     void sendInvitationEmail(String to, String token);
-    void sendConvocationEmail(String to, String arbitreName, String competitionName, String date, String token, String subject, String message, String introMessage, List<File> attachments);
+    void sendConvocationEmail(String to, String arbitreName, String competitionName, String date,String heure, String lieu, String token, String subject, String message, String introMessage, List<File> attachments);
 }

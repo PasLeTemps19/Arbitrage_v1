@@ -15,9 +15,9 @@ public class GymnasiumUpdateFormDto {
     @Size(min = 2, max = 150, message = "La rue doit contenir entre 2 et 150 caractères.")
     private String street;
 
-    @NotNull(message = "Le numéro est obligatoire.")
+
     @Min(value = 1, message = "Le numéro doit être supérieur à 0.")
-    private int number;
+    private Integer number;
 
     @NotNull(message = "Le code postal est obligatoire.")
     @Min(value = 1000, message = "Le code postal est invalide.")

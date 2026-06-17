@@ -55,7 +55,7 @@ public class EmailServiceImpl implements EmailService {
     }
 
     @Override
-    public void sendConvocationEmail(String to, String arbitreName, String competitionName, String date, String token, String subject, String message, String introMessage, List<File> attachments) {
+    public void sendConvocationEmail(String to, String arbitreName, String competitionName, String date,String heure, String lieu, String token, String subject, String message, String introMessage, List<File> attachments) {
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         try {
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
@@ -70,6 +70,8 @@ public class EmailServiceImpl implements EmailService {
                             "arbitreName", arbitreName,
                             "competitionName", competitionName,
                             "date", date,
+                            "heure", heure,
+                            "lieu", lieu,
                             "introMessage", introMessage != null ? introMessage : "Vous êtes convoqué(e) en tant qu'arbitre pour la compétition suivante :",
                             "message", message != null ? message : "",
                             "acceptUrl", "http://localhost:8080/convocation/respond/" + token + "?response=ACCEPTE",

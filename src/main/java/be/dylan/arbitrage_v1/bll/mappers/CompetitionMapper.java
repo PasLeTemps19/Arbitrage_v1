@@ -15,7 +15,9 @@ public class CompetitionMapper {
                 competition.getId(),
                 competition.getName(),
                 competition.getDate(),
-                competition.getSeason().getId()
+                competition.getSeason().getId(),
+                competition.getGymnasium().getCity()
+
         );
     }
 

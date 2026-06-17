@@ -4,7 +4,7 @@ public record GymnasiumDetailsDto(
         Long id,
         String name,
         String street,
-        int number,
+        Integer number,
         int postCode,
         String city,
         String responsable,

@@ -19,11 +19,13 @@
         <div style="background-color: #f9fafb; border-left: 4px solid #1e40af; padding: 16px; border-radius: 8px; margin: 20px 0;">
             <p style="margin: 0 0 8px 0; font-size: 16px;"><strong>📋 Compétition :</strong> ${competitionName}</p>
             <p style="margin: 0; font-size: 16px;"><strong>📅 Date :</strong> ${date}</p>
+            <p style="margin: 0; font-size: 16px;"><strong>📅 Heure :</strong> ${heure}</p>
+            <p style="margin: 0; font-size: 16px;"><strong>📅 Ville :</strong> ${lieu}</p>
         </div>
 
         <#if message?has_content>
             <div style="background-color: #eff6ff; border-radius: 8px; padding: 16px; margin: 20px 0;">
-                <p style="margin: 0; font-size: 15px; color: #1e40af;">${message}</p>
+                <div style="margin: 0; font-size: 15px; color: #1e40af;">${message?no_esc}</div>
             </div>
         </#if>
 

@@ -7,7 +7,7 @@ import org.hibernate.annotations.SoftDelete;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-@SoftDelete
+
 @Entity
 @Getter
 @Setter

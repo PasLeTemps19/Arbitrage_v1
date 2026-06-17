@@ -25,8 +25,8 @@ public class Gymnasium {
     @Column(length = 150,nullable = false)
     private String street;
 
-    @Column(nullable = false)
-    private int number;
+    @Column(nullable = true)
+    private Integer number;
 
     @Column(nullable = false)
     private int postCode;
