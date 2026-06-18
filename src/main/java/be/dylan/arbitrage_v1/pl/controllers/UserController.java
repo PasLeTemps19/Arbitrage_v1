@@ -61,7 +61,7 @@ public class UserController {
 
     @PostMapping("/invite")
     public ResponseEntity<Void> invite(@RequestBody @Valid UserInviteFormDto userInviteFormDto) {
-        userService.inviteUser(userInviteFormDto.getEmail());
+        userService.inviteUser(userInviteFormDto);
         return ResponseEntity.ok().build();
     }
 
@@ -92,6 +92,12 @@ public class UserController {
     @PatchMapping("/{id}/toggle-active")
     public ResponseEntity<Void> toggleActive(@PathVariable Long id) {
         userService.toggleActive(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/{id}/resend-invitation")
+    public ResponseEntity<Void> resendInvitation(@PathVariable Long id) {
+        userService.resendInvitation(id);
         return ResponseEntity.ok().build();
     }
 

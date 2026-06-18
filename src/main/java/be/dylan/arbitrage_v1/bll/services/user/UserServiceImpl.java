@@ -9,6 +9,7 @@ import be.dylan.arbitrage_v1.dal.repositories.RankRepository;
 import be.dylan.arbitrage_v1.dal.repositories.UserRepository;
 import be.dylan.arbitrage_v1.pl.dtos.user.UserCompleteProfileFormDto;
 import be.dylan.arbitrage_v1.pl.dtos.user.UserCreateFormDto;
+import be.dylan.arbitrage_v1.pl.dtos.user.UserInviteFormDto;
 import be.dylan.arbitrage_v1.pl.dtos.user.UserUpdateFormDto;
 import be.dylan.arbitrage_v1.pl.dtos.userRank.UserRankCreateFormDto;
 import org.springframework.context.annotation.Lazy;
@@ -67,19 +68,28 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public void inviteUser(String email) {
+    public void inviteUser(UserInviteFormDto dto) {
         // 1. Générer un token unique
         String token = UUID.randomUUID().toString();
 
 
         User user = new User();
-        user.setEmail(email);
+        user.setEmail(dto.getEmail());
         user.setToken(token);
         user.setActive(false);
         userRepository.save(user);
 
+
+        Rank rankKata = rankRepository.findByStyleAndType(dto.getRankStyleKata(), dto.getRankTypeKata())
+                .orElseThrow(() -> new RuntimeException("Rang Kata non trouvé"));
+        Rank rankKumite = rankRepository.findByStyleAndType(dto.getRankStyleKumite(), dto.getRankTypeKumite())
+                .orElseThrow(() -> new RuntimeException("Rang Kumite non trouvé"));
+
+        userRankService.assignRankIfChanged(user, rankKata, dto.getObtentionDateKata());
+        userRankService.assignRankIfChanged(user, rankKumite, dto.getObtentionDateKumite());
+
         // 2. Envoyer l'email d'invitation
-        emailService.sendInvitationEmail(email, token);
+        emailService.sendInvitationEmail(dto.getEmail(), token);
     }
 
     @Override
@@ -111,24 +121,12 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User non trouvé"));
 
-        // 3. Vérifier que les styles sont différents
-        if(dto.getRankStyle1().equals(dto.getRankStyle2())) {
-            throw new IllegalArgumentException("Les deux styles ne peuvent pas être identiques.");
-        }
 
-        // 4. Mettre à jour le profil
+        // 3. Mettre à jour le profil
         UserMapper.convertCompleteProfile(user, dto, name, surname);
         user.setKeycloakId(keycloakId);
         userRepository.save(user);
 
-// 5. Assigner les rangs seulement si différents du rang actif
-        Rank rank1 = rankRepository.findByStyleAndType(dto.getRankStyle1(), dto.getRankType1())
-                .orElseThrow(() -> new RuntimeException("Rang 1 non trouvé"));
-        Rank rank2 = rankRepository.findByStyleAndType(dto.getRankStyle2(), dto.getRankType2())
-                .orElseThrow(() -> new RuntimeException("Rang 2 non trouvé"));
-
-        userRankService.assignRankIfChanged(user, rank1, dto.getObtentionDate1());
-        userRankService.assignRankIfChanged(user, rank2, dto.getObtentionDate2());
     }
 
     @Override
@@ -142,6 +140,12 @@ public class UserServiceImpl implements UserService {
         User user = getByIdUser(id);
         user.setActive(!user.isActive());
         userRepository.save(user);
+    }
+
+    @Override
+    public void resendInvitation(Long id) {
+        User user = getByIdUser(id);
+        emailService.sendInvitationEmail(user.getEmail(), user.getToken());
     }
 
 }

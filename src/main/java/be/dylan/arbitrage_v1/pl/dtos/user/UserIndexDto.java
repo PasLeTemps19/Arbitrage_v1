@@ -5,7 +5,8 @@ public record UserIndexDto(
         String name,
         String surname,
         String phoneNumber,
-        String email
+        String email,
+        boolean pending
 ) {
 
 }

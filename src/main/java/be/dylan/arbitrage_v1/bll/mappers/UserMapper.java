@@ -11,7 +11,8 @@ public class UserMapper {
                 user.getName(),
                 user.getSurname(),
                 user.getPhoneNumber(),
-                user.getEmail()
+                user.getEmail(),
+                user.getToken() != null
         );
     }
 

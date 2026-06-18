@@ -50,19 +50,4 @@ public class UserCompleteProfileFormDto {
     @Pattern(regexp = "^FR\\d{2}[A-Z0-9]{23}$", message = "IBAN français invalide.")
     private String iban;
 
-    @NotNull(message = "Le style du premier rang est obligatoire.")
-    private RankStyle rankStyle1;
-
-    @NotNull(message = "Le type du premier rang est obligatoire.")
-    private RankType rankType1;
-
-    @NotNull(message = "Le style du deuxième rang est obligatoire.")
-    private RankStyle rankStyle2;
-
-    @NotNull(message = "Le type du deuxième rang est obligatoire.")
-    private RankType rankType2;
-
-    private LocalDate obtentionDate1;
-
-    private LocalDate obtentionDate2;
 }
