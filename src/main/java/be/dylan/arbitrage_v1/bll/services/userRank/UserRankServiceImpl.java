@@ -9,6 +9,7 @@ import be.dylan.arbitrage_v1.dal.entities.UserRank;
 import be.dylan.arbitrage_v1.dal.repositories.RankRepository;
 import be.dylan.arbitrage_v1.dal.repositories.UserRankRepository;
 import be.dylan.arbitrage_v1.pl.dtos.userRank.UserRankCreateFormDto;
+import be.dylan.arbitrage_v1.pl.dtos.userRank.UserRankPromoteFormDto;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -73,5 +74,39 @@ public class UserRankServiceImpl implements UserRankService {
     @Override
     public List<UserRank> getAllActiveRanks() {
         return userRankRepository.findByLastActiveTrue();
+    }
+
+    @Override
+    public UserRank promoteRank(UserRankPromoteFormDto dto) {
+        User user = userService.getByIdUser(dto.getUserId());
+        Rank rank = rankRepository.findByStyleAndType(dto.getRankStyle(), dto.getRankType())
+                .orElseThrow(() -> new RuntimeException("Rang non trouvé"));
+
+        // Vérifier si ce rang exact est déjà actif
+        boolean alreadyActive = userRankRepository
+                .existsByUserAndRankAndLastActive(user, rank, true);
+        if (alreadyActive) {
+            throw new RuntimeException("Ce rang est déjà le rang actif de cet arbitre.");
+        }
+
+        // Vérifier si ce rang existe déjà dans l'historique
+        boolean alreadyExists = userRankRepository
+                .existsByUserAndRank(user, rank);
+        if (alreadyExists) {
+            throw new RuntimeException("Ce rang a déjà été assigné à cet arbitre par le passé.");
+        }
+
+        userRankRepository.findByUserAndRank_StyleAndLastActiveTrue(user, rank.getStyle())
+                .ifPresent(old -> {
+                    old.setLastActive(false);
+                    userRankRepository.save(old);
+                });
+
+        UserRank userRank = new UserRank();
+        userRank.setUser(user);
+        userRank.setRank(rank);
+        userRank.setObtentionDate(dto.getObtentionDate());
+        userRank.setLastActive(true);
+        return userRankRepository.save(userRank);
     }
 }

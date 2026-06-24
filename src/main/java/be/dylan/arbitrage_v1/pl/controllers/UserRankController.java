@@ -6,6 +6,7 @@ import be.dylan.arbitrage_v1.dal.entities.UserRank;
 import be.dylan.arbitrage_v1.pl.dtos.userRank.UserRankCreateFormDto;
 import be.dylan.arbitrage_v1.pl.dtos.userRank.UserRankDetailsDto;
 import be.dylan.arbitrage_v1.pl.dtos.userRank.UserRankIndexDto;
+import be.dylan.arbitrage_v1.pl.dtos.userRank.UserRankPromoteFormDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -42,5 +43,11 @@ public class UserRankController {
                 .map(UserRankMapper::convertToUserRankIndexDto)
                 .toList();
         return ResponseEntity.ok(ranks);
+    }
+
+    @PostMapping("/promote")
+    public ResponseEntity<UserRankDetailsDto> promote(@RequestBody @Valid UserRankPromoteFormDto dto) {
+        UserRank result = userRankService.promoteRank(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(UserRankMapper.convertToUserRankDetailsDto(result));
     }
 }
