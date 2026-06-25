@@ -1,10 +1,7 @@
 package be.dylan.arbitrage_v1.bll.services.user;
 
 import be.dylan.arbitrage_v1.dal.entities.User;
-import be.dylan.arbitrage_v1.pl.dtos.user.UserCompleteProfileFormDto;
-import be.dylan.arbitrage_v1.pl.dtos.user.UserCreateFormDto;
-import be.dylan.arbitrage_v1.pl.dtos.user.UserInviteFormDto;
-import be.dylan.arbitrage_v1.pl.dtos.user.UserUpdateFormDto;
+import be.dylan.arbitrage_v1.pl.dtos.user.*;
 import org.springframework.security.core.Authentication;
 
 import java.util.List;
@@ -23,4 +20,5 @@ public interface UserService {
     User getMe(String email);
     void toggleActive(Long id);
     void resendInvitation(Long id);
+    User createExternalUser(UserExternalCreateFormDto dto);
 }

@@ -101,4 +101,11 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
+    @PostMapping("/external")
+    public ResponseEntity<UserDetailsUserViewDto> createExternal(@RequestBody @Valid UserExternalCreateFormDto dto) {
+        User user = userService.createExternalUser(dto);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(UserMapper.convertToUserDetailsUserViewDto(user));
+    }
+
 }

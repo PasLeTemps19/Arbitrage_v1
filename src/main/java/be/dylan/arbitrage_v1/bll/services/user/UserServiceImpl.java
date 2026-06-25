@@ -5,12 +5,10 @@ import be.dylan.arbitrage_v1.bll.services.email.EmailService;
 import be.dylan.arbitrage_v1.bll.services.userRank.UserRankService;
 import be.dylan.arbitrage_v1.dal.entities.Rank;
 import be.dylan.arbitrage_v1.dal.entities.User;
+import be.dylan.arbitrage_v1.dal.enums.UserType;
 import be.dylan.arbitrage_v1.dal.repositories.RankRepository;
 import be.dylan.arbitrage_v1.dal.repositories.UserRepository;
-import be.dylan.arbitrage_v1.pl.dtos.user.UserCompleteProfileFormDto;
-import be.dylan.arbitrage_v1.pl.dtos.user.UserCreateFormDto;
-import be.dylan.arbitrage_v1.pl.dtos.user.UserInviteFormDto;
-import be.dylan.arbitrage_v1.pl.dtos.user.UserUpdateFormDto;
+import be.dylan.arbitrage_v1.pl.dtos.user.*;
 import be.dylan.arbitrage_v1.pl.dtos.userRank.UserRankCreateFormDto;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.Authentication;
@@ -146,6 +144,21 @@ public class UserServiceImpl implements UserService {
     public void resendInvitation(Long id) {
         User user = getByIdUser(id);
         emailService.sendInvitationEmail(user.getEmail(), user.getToken());
+    }
+
+    @Override
+    public User createExternalUser(UserExternalCreateFormDto dto) {
+        User user = UserMapper.convertExternalToUser(dto);
+        userRepository.save(user);
+
+        Rank rankKata = rankRepository.findByStyleAndType(dto.getRankStyleKata(), dto.getRankTypeKata())
+                .orElseThrow(() -> new RuntimeException("Rang Kata non trouvé"));
+        Rank rankKumite = rankRepository.findByStyleAndType(dto.getRankStyleKumite(), dto.getRankTypeKumite())
+                .orElseThrow(() -> new RuntimeException("Rang Kumite non trouvé"));
+
+        userRankService.assignRankIfChanged(user, rankKata, dto.getObtentionDateKata());
+        userRankService.assignRankIfChanged(user, rankKumite, dto.getObtentionDateKumite());
+        return user;
     }
 
 }

@@ -1,6 +1,7 @@
 package be.dylan.arbitrage_v1.bll.mappers;
 
 import be.dylan.arbitrage_v1.dal.entities.User;
+import be.dylan.arbitrage_v1.dal.enums.UserType;
 import be.dylan.arbitrage_v1.pl.dtos.user.*;
 
 public class UserMapper {
@@ -12,7 +13,8 @@ public class UserMapper {
                 user.getSurname(),
                 user.getPhoneNumber(),
                 user.getEmail(),
-                user.getToken() != null
+                user.getToken() != null,
+                user.getUserType()
         );
     }
 
@@ -91,6 +93,16 @@ public class UserMapper {
         user.setIban(dto.getIban());
         user.setActive(true);
         user.setToken(null);
+        return user;
+    }
+
+    public static User convertExternalToUser(UserExternalCreateFormDto dto) {
+        User user = new User();
+        user.setName(dto.getName());
+        user.setSurname(dto.getSurname());
+        user.setEmail(dto.getEmail());
+        user.setActive(true);
+        user.setUserType(UserType.EXTERNE);
         return user;
     }
 

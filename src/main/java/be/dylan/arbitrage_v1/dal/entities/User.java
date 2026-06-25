@@ -1,5 +1,6 @@
 package be.dylan.arbitrage_v1.dal.entities;
 
+import be.dylan.arbitrage_v1.dal.enums.UserType;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -79,6 +80,10 @@ public class User {
     @LastModifiedDate
     @Column(nullable = false)
     private LocalDate updateDate;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private UserType userType = UserType.INTERNE;
 
     @Column(length = 150,unique = true)
     private String token;
