@@ -17,4 +17,5 @@ public interface UserRankService {
     void assignRankIfChanged(User user, Rank rank, LocalDate obtentionDate);
     List<UserRank> getAllActiveRanks();
     UserRank promoteRank(UserRankPromoteFormDto dto);
+    void deleteRankUser(Long id);
 }

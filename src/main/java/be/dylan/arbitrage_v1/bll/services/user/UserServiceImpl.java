@@ -75,6 +75,7 @@ public class UserServiceImpl implements UserService {
         user.setEmail(dto.getEmail());
         user.setToken(token);
         user.setActive(false);
+        user.setDepartment("91");
         userRepository.save(user);
 
 
@@ -159,6 +160,16 @@ public class UserServiceImpl implements UserService {
         userRankService.assignRankIfChanged(user, rankKata, dto.getObtentionDateKata());
         userRankService.assignRankIfChanged(user, rankKumite, dto.getObtentionDateKumite());
         return user;
+    }
+
+    @Override
+    public User updateExternalUser(Long id, UserExternalUpdateFormDto dto) {
+        User user = getByIdUser(id);
+        user.setName(dto.getName());
+        user.setSurname(dto.getSurname());
+        user.setEmail(dto.getEmail());
+        user.setDepartment(dto.getDepartment());
+        return userRepository.save(user);
     }
 
 }

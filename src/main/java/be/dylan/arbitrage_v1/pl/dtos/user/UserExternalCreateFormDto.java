@@ -24,6 +24,9 @@ public class UserExternalCreateFormDto {
     @Email(message = "L'email est invalide.")
     private String email;
 
+
+    private String department;
+
     @NotNull(message = "Le rang Kata est obligatoire.")
     private RankStyle rankStyleKata;
 
@@ -38,4 +41,6 @@ public class UserExternalCreateFormDto {
 
     private LocalDate obtentionDateKata;
     private LocalDate obtentionDateKumite;
+
+
 }

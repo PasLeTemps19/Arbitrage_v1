@@ -50,4 +50,11 @@ public class UserRankController {
         UserRank result = userRankService.promoteRank(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(UserRankMapper.convertToUserRankDetailsDto(result));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        userRankService.deleteRankUser(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }

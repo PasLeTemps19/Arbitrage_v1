@@ -15,6 +15,7 @@ public class UserMapper {
                 user.getEmail(),
                 user.getToken() != null,
                 user.getUserType()
+
         );
     }
 
@@ -36,7 +37,9 @@ public class UserMapper {
                 user.getIban(),
                 user.isActive(),
                 user.getCreateDate(),
-                user.getUpdateDate()
+                user.getUpdateDate(),
+                user.getDepartment(),
+                user.getUserType()
 
         );
     }
@@ -103,8 +106,25 @@ public class UserMapper {
         user.setEmail(dto.getEmail());
         user.setActive(true);
         user.setUserType(UserType.EXTERNE);
+        user.setDepartment(dto.getDepartment());
         return user;
     }
+
+    public static UserIndexExternalDto userIndexExternalDto (User user) {
+        return new UserIndexExternalDto(
+                user.getId(),
+                user.getName(),
+                user.getSurname(),
+                user.getPhoneNumber(),
+                user.getEmail(),
+                user.getToken() != null,
+                user.getUserType(),
+                user.getDepartment()
+
+        );
+    }
+
+
 
 
 }

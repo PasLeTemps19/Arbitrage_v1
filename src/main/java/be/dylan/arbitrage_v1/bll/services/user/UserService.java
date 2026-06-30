@@ -21,4 +21,5 @@ public interface UserService {
     void toggleActive(Long id);
     void resendInvitation(Long id);
     User createExternalUser(UserExternalCreateFormDto dto);
+    User updateExternalUser(Long id, UserExternalUpdateFormDto dto);
 }

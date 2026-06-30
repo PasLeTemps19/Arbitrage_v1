@@ -109,4 +109,9 @@ public class UserRankServiceImpl implements UserRankService {
         userRank.setLastActive(true);
         return userRankRepository.save(userRank);
     }
+
+    @Override
+    public void deleteRankUser(Long id) {
+        userRankRepository.deleteById(id);
+    }
 }

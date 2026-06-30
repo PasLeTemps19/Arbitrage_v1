@@ -1,5 +1,7 @@
 package be.dylan.arbitrage_v1.pl.dtos.user;
 
+import be.dylan.arbitrage_v1.dal.enums.UserType;
+
 import java.time.LocalDate;
 
 public record UserDetailsUserViewDto(
@@ -19,7 +21,9 @@ public record UserDetailsUserViewDto(
         String iban,
         boolean active,
         LocalDate createDate,
-        LocalDate updateDate
+        LocalDate updateDate,
+        String department,
+        UserType userType
 
 
 ) {

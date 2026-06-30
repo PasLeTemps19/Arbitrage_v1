@@ -3,6 +3,7 @@ package be.dylan.arbitrage_v1.pl.controllers;
 import be.dylan.arbitrage_v1.bll.mappers.UserMapper;
 import be.dylan.arbitrage_v1.bll.services.user.UserService;
 import be.dylan.arbitrage_v1.dal.entities.User;
+import be.dylan.arbitrage_v1.dal.enums.UserType;
 import be.dylan.arbitrage_v1.pl.dtos.user.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,10 +25,12 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
-    public ResponseEntity<List<UserIndexDto>> findAll() {
-        List<UserIndexDto> users = userService.getAllUsers()
+    public ResponseEntity<List<?>> findAll() {
+        List<?> users = userService.getAllUsers()
                 .stream()
-                .map(UserMapper::convertToUserIndexDto)
+                .map(user -> user.getUserType() == UserType.EXTERNE
+                        ? UserMapper.userIndexExternalDto(user)
+                        : UserMapper.convertToUserIndexDto(user))
                 .toList();
         return ResponseEntity.ok(users);
     }
@@ -106,6 +109,12 @@ public class UserController {
         User user = userService.createExternalUser(dto);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(UserMapper.convertToUserDetailsUserViewDto(user));
+    }
+
+    @PatchMapping("/{id}/external")
+    public ResponseEntity<UserDetailsUserViewDto> updateExternal(@PathVariable Long id, @RequestBody @Valid UserExternalUpdateFormDto dto) {
+        User user = userService.updateExternalUser(id, dto);
+        return ResponseEntity.ok(UserMapper.convertToUserDetailsUserViewDto(user));
     }
 
 }

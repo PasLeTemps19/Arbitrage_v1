@@ -70,6 +70,9 @@ public class User {
     @Column(length = 27)
     private String iban;
 
+    @Column(length = 10)
+    private String department;
+
     @Column(nullable = false)
     private boolean active;
 
