@@ -114,4 +114,9 @@ public class UserRankServiceImpl implements UserRankService {
     public void deleteRankUser(Long id) {
         userRankRepository.deleteById(id);
     }
+
+    @Override
+    public void deleteAllByUser(User user) {
+        userRankRepository.deleteByUser(user);
+    }
 }

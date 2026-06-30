@@ -21,4 +21,5 @@ public interface UserRankRepository extends JpaRepository<UserRank, Long> {
     Optional<UserRank> findByUserAndRank_StyleAndLastActive(User user, RankStyle style, boolean lastActive);
     List<UserRank> findByLastActiveTrue();
     boolean existsByUserAndRank(User user, Rank rank);
+    void deleteByUser(User user);
 }

@@ -18,4 +18,5 @@ public interface UserRankService {
     List<UserRank> getAllActiveRanks();
     UserRank promoteRank(UserRankPromoteFormDto dto);
     void deleteRankUser(Long id);
+    void deleteAllByUser(User user);
 }

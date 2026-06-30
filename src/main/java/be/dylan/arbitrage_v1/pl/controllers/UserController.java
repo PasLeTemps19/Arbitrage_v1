@@ -117,4 +117,10 @@ public class UserController {
         return ResponseEntity.ok(UserMapper.convertToUserDetailsUserViewDto(user));
     }
 
+    @DeleteMapping("/{id}/cancel-invitation")
+    public ResponseEntity<Void> cancelInvitation(@PathVariable Long id) {
+        userService.deletePendingUser(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }

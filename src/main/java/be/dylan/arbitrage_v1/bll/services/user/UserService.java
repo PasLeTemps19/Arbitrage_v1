@@ -22,4 +22,5 @@ public interface UserService {
     void resendInvitation(Long id);
     User createExternalUser(UserExternalCreateFormDto dto);
     User updateExternalUser(Long id, UserExternalUpdateFormDto dto);
+    void deletePendingUser(Long id);
 }

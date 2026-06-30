@@ -94,6 +94,9 @@ public class User {
     @Column(unique = true)
     private UUID keycloakId;
 
+    @Column(nullable = false)
+    private boolean cancelled = false;
+
 
 
     @ManyToMany

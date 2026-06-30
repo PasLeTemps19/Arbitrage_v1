@@ -5,15 +5,14 @@ import be.dylan.arbitrage_v1.bll.services.email.EmailService;
 import be.dylan.arbitrage_v1.bll.services.userRank.UserRankService;
 import be.dylan.arbitrage_v1.dal.entities.Rank;
 import be.dylan.arbitrage_v1.dal.entities.User;
-import be.dylan.arbitrage_v1.dal.enums.UserType;
 import be.dylan.arbitrage_v1.dal.repositories.RankRepository;
 import be.dylan.arbitrage_v1.dal.repositories.UserRepository;
 import be.dylan.arbitrage_v1.pl.dtos.user.*;
-import be.dylan.arbitrage_v1.pl.dtos.userRank.UserRankCreateFormDto;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -37,7 +36,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getAllUsers() {
-        return userRepository.findAll();
+        return userRepository.findAll().stream()
+                .filter(u -> !u.isCancelled())
+                .toList();
     }
 
     @Override
@@ -67,17 +68,26 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void inviteUser(UserInviteFormDto dto) {
-        // 1. Générer un token unique
         String token = UUID.randomUUID().toString();
 
+        User user = userRepository.findByEmail(dto.getEmail()).orElse(null);
 
-        User user = new User();
-        user.setEmail(dto.getEmail());
-        user.setToken(token);
-        user.setActive(false);
-        user.setDepartment("91");
+        if (user != null && user.isCancelled()) {
+            user.setCancelled(false);
+            user.setToken(token);
+            user.setActive(false);
+            user.setDepartment("91");
+        } else if (user == null) {
+            user = new User();
+            user.setEmail(dto.getEmail());
+            user.setToken(token);
+            user.setActive(false);
+            user.setDepartment("91");
+        } else {
+            throw new RuntimeException("Un utilisateur existe déjà avec cet email.");
+        }
+
         userRepository.save(user);
-
 
         Rank rankKata = rankRepository.findByStyleAndType(dto.getRankStyleKata(), dto.getRankTypeKata())
                 .orElseThrow(() -> new RuntimeException("Rang Kata non trouvé"));
@@ -87,7 +97,6 @@ public class UserServiceImpl implements UserService {
         userRankService.assignRankIfChanged(user, rankKata, dto.getObtentionDateKata());
         userRankService.assignRankIfChanged(user, rankKumite, dto.getObtentionDateKumite());
 
-        // 2. Envoyer l'email d'invitation
         emailService.sendInvitationEmail(dto.getEmail(), token);
     }
 
@@ -170,6 +179,18 @@ public class UserServiceImpl implements UserService {
         user.setEmail(dto.getEmail());
         user.setDepartment(dto.getDepartment());
         return userRepository.save(user);
+    }
+
+    @Override
+    @Transactional
+    public void deletePendingUser(Long id) {
+        User user = getByIdUser(id);
+        if (user.getToken() == null) {
+            throw new RuntimeException("Cet utilisateur n'est pas en attente.");
+        }
+        userRankService.deleteAllByUser(user);
+        user.setCancelled(true);
+        userRepository.save(user);
     }
 
 }
