@@ -2,8 +2,6 @@ package be.dylan.arbitrage_v1.dal.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.SoftDelete;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 
